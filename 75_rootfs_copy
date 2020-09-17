@@ -1,7 +1,8 @@
 #!/bin/sh
 # Copyright (C) 2020 OpenWrt.org
 # Copyright (C) 2020 G.KERMA - Gandalf(at)Gk2(dot)net
-#
+# v002
+# 
 # dependencies : mount-utils partx-utils block-mount fdisk
 
 . /lib/functions.sh
@@ -11,35 +12,33 @@ rootfs_premount_init() {
 	local boot_partdev
 	local root_partdev
 	local reset_needed
+	local reset_progress
+
 	DISK=/dev/mmcblk0
 	DEVICE=${DISK}p3
 
 	reset_needed=false
+	reset_progress=false
+
 	# Test root fs reset needed
 	echo "Test root fs reset needed..."
 	if export_bootdevice && export_partdevice boot_partdev 1; then
 		mkdir -p /boot
 		mount -o rw,noatime "/dev/$boot_partdev" /boot
 		[ ! -f /boot/rootfs.ready ] && reset_needed=true
+		[ -f /boot/rootfs.reset ] && reset_progress=true
 		umount /boot
 	fi
 
 	if $reset_needed ; then 
 		# Reset root fs is needed
 		echo "Reset root fs is needed !"
-		if export_partdevice root_partdev 3; then
-			# Remove root fs before mount root
-			echo "Remove root fs on ${DEVICE}"
-yes | fdisk -u ${DISK} <<EOF
-d
-3
-w
-EOF
-			partx -d - ${DEVICE}
-		fi
-		# Add root fs before mount root
-		echo "Add root fs on ${DEVICE}"
-		yes | fdisk -u ${DISK} <<EOF
+		if [ $reset_progress ]; then
+			echo "Reset root fs is in progress !"
+			if [ ! -b ${DEVICE} ]; then
+				# Add root fs before mount root
+				echo "Add root fs on ${DEVICE}"
+				yes | fdisk -u ${DISK} <<EOF
 n
 p
 3
@@ -47,51 +46,71 @@ p
 
 w
 EOF
-		partx -a - ${DEVICE}
-		
-		echo "Prepare root fs on ${DEVICE}"
-		yes | mkfs.ext4 ${DEVICE}
-
-		# Copy root fs before mount root
-		echo "Copy root fs on ${DEVICE}"
-		mkdir -p /tmp/cproot
-		mount --bind / /tmp/cproot
-		mkdir /tmp/rootfs
-		mount ${DEVICE} /tmp/rootfs
-		if mountpoint -q /tmp/rootfs ; then
-			tar -C /tmp/cproot -cf - . | tar -C /tmp/rootfs -xf -
-			sync
-			umount /tmp/cproot
-		
-			# Configure root fs before mount root
-			echo "Configure root fs on ${DEVICE}"
-			
-			## FIXME : TODO uci
-										
-							##config mount
-			##	option enabled '1'
-			##	option enabled_fsck '1'
-			##	option target '/'
-			##	option device '${DEVICE}'
-
-			eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
-
-			uci -q delete fstab.rootfs
-			uci set fstab.rootfs="mount"
-			uci set fstab.rootfs.uuid="${UUID}"
-			## uci set fstab.rootfs.device="${DEVICE}"
-			uci set fstab.rootfs.target="/"
-			uci set fstab.rootfs.enabled="1"                                                                                                       
-			uci set fstab.rootfs.enabled_fsck="1"
-			uci commit fstab
-
-			# Activate root fs before mount root
-			echo "Activate root fs on ${DEVICE}"
-			/etc/init.d/fstab enable
+			partx -d - ${DEVICE}
+			partx -a - ${DEVICE}
+			fi
 		fi
-		rmdir /tmp/cproot
-		umount /tmp/rootfs
-		rmdir /tmp/rootfs
+		if [ -b ${DEVICE} ]; then
+			echo "Prepare root fs on ${DEVICE}"
+			yes | mkfs.ext4 ${DEVICE}
+	
+			# Copy root fs before mount root
+			echo "Copy root fs on ${DEVICE}"
+			mkdir -p /tmp/cproot
+			mount --bind / /tmp/cproot
+			mkdir /tmp/rootfs
+			mount ${DEVICE} /tmp/rootfs
+			if mountpoint -q /tmp/rootfs ; then
+				tar -C /tmp/cproot -cf - . | tar -C /tmp/rootfs -xf -
+				sync
+				umount /tmp/cproot
+			
+				# Configure root fs before mount root
+				echo "Configure root fs on ${DEVICE}"
+				
+				## FIXME : TODO uci
+											
+								##config mount
+				##	option enabled '1'
+				##	option enabled_fsck '1'
+				##	option target '/'
+				##	option device '${DEVICE}'
+	
+				eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
+
+				uci -q delete fstab.rootfs
+				uci set fstab.rootfs="mount"
+				uci set fstab.rootfs.uuid="${UUID}"
+				## uci set fstab.rootfs.device="${DEVICE}"
+				uci set fstab.rootfs.target="/"
+				uci set fstab.rootfs.enabled="1"                                                                                                       
+				uci set fstab.rootfs.enabled_fsck="1"
+				uci commit fstab
+	
+				# Activate root fs before mount root
+				echo "Activate root fs on ${DEVICE}"
+				/etc/init.d/fstab enable
+			fi
+			rmdir /tmp/cproot
+			umount /tmp/rootfs
+			rmdir /tmp/rootfs
+		else
+			# Reset root fs is needed
+			echo "Test root fs reset in progress..."
+			if export_bootdevice && export_partdevice boot_partdev 1; then
+				mkdir -p /boot
+				mount -o rw,noatime "/dev/$boot_partdev" /boot
+				if [ ! -f /boot/rootfs.reset ]; then
+					# Flag root fs reset progress
+					echo "Flag root fs reset progress..."
+					touch /boot/rootfs.reset
+				fi
+				umount /boot
+				sync
+			fi
+			echo "We need a reboot !"
+			reboot -n
+		fi
 	fi
 }
 
@@ -109,8 +128,11 @@ rootfs_postmount_init() {
 			# Flag root fs reset done
 			echo "Flag root fs reset done..."
 
-			touch /boot/rootfs.ready
-			touch /rootfs.ready
+			if [ ! -f /boot/rootfs.reset ]; then
+			##rm /boot/rootfs.reset
+				touch /boot/rootfs.ready
+				touch /rootfs.ready
+			fi
 		fi
 		umount /boot
 	fi
@@ -118,4 +140,3 @@ rootfs_postmount_init() {
 
 boot_hook_add preinit_main rootfs_premount_init
 boot_hook_add preinit_mount_root rootfs_postmount_init
-
