@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright (C) 2020 OpenWrt.org
 # Copyright (C) 2020 G.KERMA - Gandalf(at)Gk2(dot)net
-# v002
+# v003
 # 
 # dependencies : mount-utils partx-utils block-mount fdisk
 
@@ -94,6 +94,13 @@ EOF
 			rmdir /tmp/cproot
 			umount /tmp/rootfs
 			rmdir /tmp/rootfs
+			if export_bootdevice && export_partdevice boot_partdev 1; then
+				mkdir -p /boot
+				mount -o rw,noatime "/dev/$boot_partdev" /boot
+				[ ! -f /boot/rootfs.ready ] && touch /boot/rootfs.ready
+				[ -f /boot/rootfs.reset ] && rm /boot/rootfs.reset
+				umount /boot
+			fi
 		else
 			# Reset root fs is needed
 			echo "Test root fs reset in progress..."
