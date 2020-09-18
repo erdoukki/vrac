@@ -2,6 +2,14 @@ How to build :
 ```
 make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-mount kmod-fs-ext4 fdisk partx-utils" 
 ```
+How prepare SysUpgrade :
+```
+wget https://raw.githubusercontent.com/erdoukki/vrac/master/openwrt/files/etc/profile.d/opkg.sh -O /etc/profile.d/opkg.sh
+. /etc/profile
+opkg_backup
+```
+then -> luci (keep settings, force upgrade) openwrt-19.07.4-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
+
 How to flash : 
 ```
 usb reset
