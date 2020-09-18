@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright (C) 2020 OpenWrt.org
 # Copyright (C) 2020 G.KERMA - Gandalf(at)Gk2(dot)net
-# v005
+# v006
 # 
 # dependencies : mount-utils partx-utils block-mount fdisk
 
@@ -143,10 +143,9 @@ rootfs_postmount_init() {
 						/etc/init.d/update_refresh enable
 					fi
 				fi
-##			else
 				# Flag root fs reset complete
-##				echo "Flag root fs reset complete..."
-##				touch /rootfs.ready
+				echo "Flag root fs reset complete..."
+				touch /rootfs.ready
 			fi
 		fi
 		umount /boot
