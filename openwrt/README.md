@@ -1,6 +1,6 @@
 How to build :
 ```
-make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-mount kmod-fs-ext4 fdisk" 
+make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-mount kmod-fs-ext4 fdisk partx-utils" 
 ```
 How to flash : 
 ```
