@@ -17,11 +17,11 @@ start() {
 
 stop() {
 	echo "Backup user packages list"
-	if [ -f "/rootfs.done" ]; then
-		echo "Auto(pre)install user packages"
+##	if [ -f "/rootfs.done" ]; then
+##		echo "Auto(pre)install user packages"
 		opkg_backup
-		rm "/rootfs.done"
-	fi
+##		rm "/rootfs.done"
+##	fi
 }
 
 boot () {
