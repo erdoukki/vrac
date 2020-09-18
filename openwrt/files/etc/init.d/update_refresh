@@ -9,6 +9,7 @@ start() {
 	# auto(re)install user packages
 	if [ ! -f "/rootfs.done" ]; then
 		echo "Auto(re)install user packages"
+		sleep 10s
 		opkg update
 		opkg_restore rwm
 		if [ -f "/rootfs.ready" ]; then
