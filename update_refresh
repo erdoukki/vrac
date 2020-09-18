@@ -1,0 +1,29 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=20
+
+. /etc/profile.d/opkg.sh
+
+start() {
+	# auto(re)install user packages
+	if [ ! -f "/rootfs.done" ]; then
+		echo "Auto(re)install user packages"
+		opkg update
+		opkg_restore rwm
+		touch "/rootfs.done"
+	fi
+ }
+
+stop() {
+	echo "Backup user packages list"
+	if [ -f "/rootfs.done" ]; then
+		echo "Auto(pre)install user packages"
+		opkg_backup
+		rm "/rootfs.done"
+	fi
+}
+
+boot () {
+	start
+}
