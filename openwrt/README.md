@@ -4,7 +4,7 @@ make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-
 ```
 How prepare SysUpgrade :
 ```
-mkdir -p /etc/prodile.d/
+mkdir -p /etc/profile.d/
 wget https://raw.githubusercontent.com/erdoukki/vrac/master/openwrt/files/etc/profile.d/opkg.sh -O /etc/profile.d/opkg.sh
 . /etc/profile
 opkg_backup
