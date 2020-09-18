@@ -11,17 +11,19 @@ start() {
 		echo "Auto(re)install user packages"
 		opkg update
 		opkg_restore rwm
-		touch "/rootfs.done"
-	fi
+		if [ -f "/rootfs.ready" ]; then
+			touch "/rootfs.done"
+		fi
+ 	fi
  }
 
 stop() {
 	echo "Backup user packages list"
-##	if [ -f "/rootfs.done" ]; then
-##		echo "Auto(pre)install user packages"
+	if [ -f "/rootfs.done" ]; then
+		echo "Auto(pre)install user packages"
 		opkg_backup
 ##		rm "/rootfs.done"
-##	fi
+	fi
 }
 
 boot () {
