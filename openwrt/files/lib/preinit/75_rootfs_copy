@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright (C) 2020 OpenWrt.org
 # Copyright (C) 2020 G.KERMA - Gandalf(at)Gk2(dot)net
-# v004
+# v005
 # 
 # dependencies : mount-utils partx-utils block-mount fdisk
 
@@ -134,11 +134,8 @@ rootfs_postmount_init() {
 	if export_bootdevice && export_partdevice boot_partdev 1; then
 		mkdir -p /boot
 		mount -o rw,noatime "/dev/$boot_partdev" /boot
-		if [ -f /boot/rootfs.ready ]; then
-			if [ ! -f /boot/rootfs.reset ]; then
-				# Flag root fs reset complete
-				echo "Flag root fs reset complete..."
-				touch /rootfs.ready
+		if [ ! -f /boot/rootfs.reset ]; then
+			if [ -f /boot/rootfs.ready ]; then
 				if [ -f "/etc/init.d/update_refresh" ]; then
 					if [ ! -f /rootfs.done ]; then
 						# Activate Update Refresh
@@ -146,6 +143,10 @@ rootfs_postmount_init() {
 						/etc/init.d/update_refresh enable
 					fi
 				fi
+##			else
+				# Flag root fs reset complete
+##				echo "Flag root fs reset complete..."
+##				touch /rootfs.ready
 			fi
 		fi
 		umount /boot
