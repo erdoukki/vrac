@@ -11,3 +11,12 @@ gzwrite mmc 1 $kernel_addr_r $filesize
 mmc part
 boot
 ```
+How to boot : 
+```
+bootcmd=mmc dev 1; ext4load mmc 1:1 $kernel_addr $image_name; ext4load mmc 1:1 $fdt_addr $fdt_name; setenv bootargs $console root=/dev/mmcblk0p2 rw rootwait net.ifnames=0 biosdevname=0; booti $kernel_addr - $fdt_addr
+console=console=ttyMV0,115200 earlycon=ar3700_uart,0xd0012000
+fdt_addr=0x6f00000
+fdt_name=armada-3720-espressobin-v7-emmc.dtb
+image_name=Image
+kernel_addr=0x7000000
+```
