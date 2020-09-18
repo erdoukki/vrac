@@ -11,7 +11,7 @@ opkg_backup
 ```
 then -> luci (keep settings, force upgrade) openwrt-19.07.4-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
 
-How to flash : 
+How to flash eMMC from u-boot : 
 ```
 usb reset
 load usb 0:1 $kernel_addr_r /TEMPO/19.07.04/openwrt-19.07.4-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
