@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copyright (C) 2020 OpenWrt.org
 # Copyright (C) 2020 G.KERMA - Gandalf(at)Gk2(dot)net
-# v006
+# v007
 # 
 # dependencies : mount-utils partx-utils block-mount fdisk
 
@@ -20,6 +20,10 @@ rootfs_premount_init() {
 	reset_needed=false
 	reset_progress=false
 
+	if [ ! -f `which fdisk` ]; then
+		echo "missing fdisk !"
+		exit 1
+	fi
 	# Test root fs reset needed
 	echo "Test root fs reset needed..."
 	if export_bootdevice && export_partdevice boot_partdev 1; then
