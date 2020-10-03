@@ -65,6 +65,7 @@ If a client connects to the MV1000 and cannot obtain an ip address, you need to 
 ![](images/1.png)
 
 Filters
+https://github.com/alexsannikov/adguardhome-filters
 
 ![](images/3.png)
 
