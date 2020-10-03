@@ -74,3 +74,6 @@ Query Log
 ![](images/11.png)
 
 from : https://github.com/gl-inet/mv1000-ubuntu-image/blob/master/AdGuardHome/InstallGuide.md
+
+luci app companion
+https://github.com/rufengsuixing/luci-app-adguardhome/releases
