@@ -1,0 +1,4 @@
+4d42039c71f6c246c1f393a34e71b2119c9c62726e39d3edec63165b363df84e *openwrt-19.07.5-mvebu-cortexa53-device-globalscale-espressobin-v7-emmc.manifest
+2fd4c96739df65ff4dc6a89c08f1c9723347a9cc9de3451d7f9c33567b5cdcf5 *openwrt-19.07.5-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
+81218427eafefc7684c872ce62391ad25d09ddbc96fbaa7bbc2fc0c824f6b7fa *openwrt-19.07.5-mvebu-cortexa53-globalscale_espressobin-v7-emmc-squashfs-sdcard.img.gz
+ef81773d31a39737f7ce30c8e9dcdd0d25fab5265419620982d135493ed5e220 *profiles.json
