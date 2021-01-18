@@ -1,6 +1,6 @@
 How to build :
 ```
-make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-mount kmod-fs-ext4 fdisk partx-utils" 
+make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-mount kmod-fs-ext4 fdisk mount-utils partx-utils luci-ssl" 
 ```
 How prepare SysUpgrade :
 ```
@@ -9,12 +9,12 @@ wget https://raw.githubusercontent.com/erdoukki/vrac/master/openwrt/files/etc/pr
 . /etc/profile
 opkg_backup
 ```
-then -> luci (keep settings, force upgrade) openwrt-19.07.4-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
+then -> luci (keep settings, force upgrade) openwrt-19.07.5-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
 
 How to flash eMMC from u-boot : 
 ```
 usb reset
-load usb 0:1 $kernel_addr_r /TEMPO/19.07.04/openwrt-19.07.4-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
+load usb 0:1 $kernel_addr_r /TEMPO/19.07.04/openwrt-19.07.5-mvebu-cortexa53-globalscale_espressobin-v7-emmc-ext4-sdcard.img.gz
 mmc dev 1 0
 gzwrite mmc 1 $kernel_addr_r $filesize
 mmc part
