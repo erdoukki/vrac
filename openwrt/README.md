@@ -32,7 +32,7 @@ kernel_addr=0x7000000
 KNOWN ISSUE :
 If the firmware is not correctly reconized, and propose only to make a FORCE UPGRADE;
 just modify the bootargs as follow :
-'''
+```
 root@LGM:~# fw_setenv set_bootargs 'setenv bootargs $console $root $extra_params'
-'''
+```
 REBOOT and try again to upgrade !
