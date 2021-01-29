@@ -14,6 +14,9 @@ start() {
 		opkg_restore rwm
 		if [ -f "/rootfs.ready" ]; then
 			touch "/rootfs.done"
+			# add a reboot : needed for wifi activation
+			sync
+			reboot
 		fi
  	fi
  }
