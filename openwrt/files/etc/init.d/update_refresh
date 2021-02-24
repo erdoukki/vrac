@@ -11,7 +11,7 @@ start() {
 		echo "Auto(re)install user packages"
 		sleep 10s
 		opkg update
-		opkg_restore rwm
+		opkg_restore
 		if [ -f "/rootfs.ready" ]; then
 			touch "/rootfs.done"
 			# add a reboot : needed for wifi activation
