@@ -8,3 +8,7 @@
 
 ## a preinit script for preparing a extroot additional partition
 /lib/preinit/75_rootfs_copy
+
+# Howto use
+wget/copy them to you OpenWrt system
+add them to your backuped files in /etc/sysupgrade.conf
