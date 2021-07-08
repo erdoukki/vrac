@@ -26,6 +26,7 @@ trm_fetch="$(command -v curl)"
 
 user="${1}"
 password="${2}"
+success_string="Authentication Success"
 
 RET=0
 CHALLENGE="$("${trm_fetch}" -Is http://${trm_domain} | grep challenge | sed -nr 's|.*&challenge=([0-9a-z]+)&.*|\1|p')"
@@ -33,7 +34,11 @@ PAGE="$("${trm_fetch}" -ks --user-agent "${trm_useragent}" --connect-timeout $((
         --header "Content-Type:application/x-www-form-urlencoded" \
         --data "username=${user}&password=${password}&challenge=${CHALLENGE}&userurl=http%3A%2F%2F${trm_domain}" "${trm_url}")"
 NEWURL="$(echo "$PAGE"|sed -nr 's|.*window.location.*"(.*)";.*|\1|p')"
-response="$("${trm_fetch}" --user-agent "${trm_useragent}" --connect-timeout $((trm_maxwait/6)) "$NEWURL")"
-##echo ${response}
-RET=$?
-exit $RET
+response="$("${trm_fetch}" -sL --user-agent "${trm_useragent}" --connect-timeout $((trm_maxwait/6)) "$NEWURL")"
+##echo $response
+if [ -n "$(printf "%s" "${response}" | grep "${success_string}")" ]
+then
+        exit 0
+else
+        exit 2
+fi
