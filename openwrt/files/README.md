@@ -11,4 +11,4 @@
 
 # Howto use
 wget/copy them to you OpenWrt system
-add them to your backuped files in /etc/sysupgrade.conf
+and add them to your backuped files in /etc/sysupgrade.conf
