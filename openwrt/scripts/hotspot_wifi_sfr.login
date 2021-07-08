@@ -1,6 +1,6 @@
-#!/bin/sh +x
+#!/bin/sh
 # captive portal auto-login script for SFR FON HotSpot with credentials as parameters
-# Copyright (c) 2021 Gérald Kerma (gandalf@gk2.net)
+# Copyright (c) 2021 GÃ©rald Kerma (gandalf@gk2.net)
 # This is free software, licensed under the GNU General Public License v3.
 
 # set (s)hellcheck exceptions
@@ -15,7 +15,7 @@ set -o pipefail
 
 if [ "$(uci_get 2>/dev/null; printf "%u" "${?}")" = "127" ]
 then
-	. "/lib/functions.sh"
+        . "/lib/functions.sh"
 fi
 
 trm_domain="www.perdu.com"
@@ -27,10 +27,13 @@ trm_fetch="$(command -v curl)"
 user="${1}"
 password="${2}"
 
-local RET=0
-local CHALLENGE="$("${trm_fetch}" -Is http://${trm_domain} | grep challenge | sed -nr 's|.*&challenge=([0-9a-z]+)&.*|\1|p')
-local PAGE="$("${trm_fetch}" -ks --user-agent "${trm_useragent}" --silent --connect-timeout $((trm_maxwait/6)) --header "Content-Type:application/x-www-form-urlencoded" --data "username=${user}&password=${password}&challenge=${CHALLENGE}&userurl=http%3A%2F%2F${trm_domain}" "${trm_url")"
-local NEWURL="$(echo "$PAGE"|sed -nr 's|.*window.location.*"(.*)";.*|\1|p')"
+RET=0
+CHALLENGE="$("${trm_fetch}" -Is http://${trm_domain} | grep challenge | sed -nr 's|.*&challenge=([0-9a-z]+)&.*|\1|p')"
+PAGE="$("${trm_fetch}" -ks --user-agent "${trm_useragent}" --silent --connect-timeout $((trm_maxwait/6)) \
+        --header "Content-Type:application/x-www-form-urlencoded" \
+        --data "username=${user}&password=${password}&challenge=${CHALLENGE}&userurl=http%3A%2F%2F${trm_domain}" "${trm_url}")"
+NEWURL="$(echo "$PAGE"|sed -nr 's|.*window.location.*"(.*)";.*|\1|p')"
 response="$("${trm_fetch}" --user-agent "${trm_useragent}" --silent --connect-timeout $((trm_maxwait/6)) "$NEWURL")"
+##echo ${response}
 RET=$?
 exit $RET
