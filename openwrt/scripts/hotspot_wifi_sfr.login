@@ -29,11 +29,11 @@ password="${2}"
 
 RET=0
 CHALLENGE="$("${trm_fetch}" -Is http://${trm_domain} | grep challenge | sed -nr 's|.*&challenge=([0-9a-z]+)&.*|\1|p')"
-PAGE="$("${trm_fetch}" -ks --user-agent "${trm_useragent}" --silent --connect-timeout $((trm_maxwait/6)) \
+PAGE="$("${trm_fetch}" -ks --user-agent "${trm_useragent}" --connect-timeout $((trm_maxwait/6)) \
         --header "Content-Type:application/x-www-form-urlencoded" \
         --data "username=${user}&password=${password}&challenge=${CHALLENGE}&userurl=http%3A%2F%2F${trm_domain}" "${trm_url}")"
 NEWURL="$(echo "$PAGE"|sed -nr 's|.*window.location.*"(.*)";.*|\1|p')"
-response="$("${trm_fetch}" --user-agent "${trm_useragent}" --silent --connect-timeout $((trm_maxwait/6)) "$NEWURL")"
+response="$("${trm_fetch}" --user-agent "${trm_useragent}" --connect-timeout $((trm_maxwait/6)) "$NEWURL")"
 ##echo ${response}
 RET=$?
 exit $RET
