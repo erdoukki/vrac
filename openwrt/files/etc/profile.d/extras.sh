@@ -1,4 +1,4 @@
-## 202109271025
+## 202109271120
 ## Start of all extras
 mkdir -p /etc/profile.d
 cat << "EOAF" > /etc/profile.d/extras.sh
