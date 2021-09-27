@@ -1,4 +1,4 @@
-## 202109271000
+## 202109271025
 ## Start of all extras
 mkdir -p /etc/profile.d
 cat << "EOAF" > /etc/profile.d/extras.sh
@@ -161,7 +161,7 @@ case "${OPKG_OPT:1}" in
 esac
 find "${OPKG_INFO}" -name "*.control" \
 -type "${OPKG_TYPE}" 2> /dev/null \
-| sed -e "s/^.*\/;s/\.control$"
+| sed -e "s/^.*\///;s/\.control$//"
 }
 
 opkg_export_run() {
