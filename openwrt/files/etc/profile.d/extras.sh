@@ -210,6 +210,7 @@ mkdir -p /etc/hotplug.d/online
 cat << "EOF" > /etc/hotplug.d/online/50-opkg-restore
 if [ ! -e /etc/opkg-restore ] \
 && lock -n /var/lock/opkg-restore \
+&& lock -w /var/lock/opkg.lock \
 && opkg update
 then . /etc/profile.d/opkg.sh
 if uci -q get fstab.overlay > /dev/null \
@@ -321,9 +322,11 @@ EOF
 # Prepare extroot/overlay automatically
 mkdir -p /etc/hotplug.d/online
 cat << "EOF" > /etc/hotplug.d/online/49-extroot-init
-if [ ! -e /etc/extroot-init ] && lock -n /var/lock/extroot-init && opkg update
-then
-  . /etc/profile.d/opkg.sh
+if [ ! -e /etc/extroot-init ] \
+&& lock -n /var/lock/extroot-init \
+&& lock -w /var/lock/opkg.lock \
+&& opkg update
+then . /etc/profile.d/opkg.sh
   if ! uci -q get fstab.overlay > /dev/null
   then
     DISK=/dev/mmcblk0
