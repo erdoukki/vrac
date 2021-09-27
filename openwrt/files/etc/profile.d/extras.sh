@@ -364,9 +364,12 @@ EOCF
       uci commit fstab
       touch /etc/extroot-init
       lock -u /var/lock/extroot-init
+      sync
       reboot
     fi
   fi
+  touch /etc/extroot-init
+  lock -u /var/lock/extroot-init     
 fi
 EOF
 cat << "EOF" >> /etc/sysupgrade.conf
