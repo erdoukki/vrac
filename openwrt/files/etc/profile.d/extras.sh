@@ -371,6 +371,14 @@ EOCF
       reboot
     fi
   fi
+  uci set opkg.rwm="opkg"
+  uci add_list opkg.rwm.ipkg="fdisk"
+  uci add_list opkg.rwm.ipkg="block-mount"
+  uci add_list opkg.rwm.ipkg="kmod-fs-f2fs"
+  uci add_list opkg.rwm.ipkg="f2fs-tools"
+  uci add_list opkg.rwm.ipkg="partx-utils"
+  uci add_list opkg.rwm.ipkg="mount-utils"
+  uci commit opkg
   touch /etc/extroot-init
   lock -u /var/lock/extroot-init     
 fi
