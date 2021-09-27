@@ -1,6 +1,7 @@
-## 202109270930
+## 202109271000
 ## Start of all extras
-cat << "EOAF" > /etc/uci-defaults/50_extras.sh
+mkdir -p /etc/profile.d
+cat << "EOAF" > /etc/profile.d/extras.sh
 ## opkg-extras
 # Configure profile
 mkdir -p /etc/profile.d
@@ -331,8 +332,8 @@ then
     uci add_list opkg.rwm.ipkg="fdisk"
     uci add_list opkg.rwm.ipkg="block-mount"
     uci add_list opkg.rwm.ipkg="kmod-fs-f2fs"
-    uci add_list opkg.rwm.ipkg="f2fstools"
-    uci add_list opkg.rwm.ipkg="partx"
+    uci add_list opkg.rwm.ipkg="f2fs-tools"
+    uci add_list opkg.rwm.ipkg="partx-utils"
     uci add_list opkg.rwm.ipkg="mount-utils"
     uci commit opkg
     opkg restore rwm
@@ -373,4 +374,4 @@ cat << "EOF" >> /etc/sysupgrade.conf
 EOF
 ## End of all extras
 EOAF
-. /etc/uci-defaults/50_extras.sh
+. /etc/profile.d/extras.sh
