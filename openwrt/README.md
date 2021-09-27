@@ -48,8 +48,8 @@ reset
 How prepare extroot/overlay (WIP) :
 ```
 mkdir -p /etc/profile.d/
-wget https://raw.githubusercontent.com/erdoukki/vrac/master/openwrt/files/etc/uci-defaults/50_extras.sh -O /etc/uci-defaults/50_extras.sh
-. /etc/uci-defaults/50_extras.sh
+wget https://raw.githubusercontent.com/erdoukki/vrac/master/openwrt/files/etc/profile.d/extras.sh -O /etc/profile.d/extras.sh
+. /etc/profile.d/extras.sh
 opkg backup
 ```
 
