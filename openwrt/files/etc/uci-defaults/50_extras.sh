@@ -1,4 +1,4 @@
-## 202109270920
+## 202109270930
 ## Start of all extras
 cat << "EOAF" > /etc/uci-defaults/50_extras.sh
 ## opkg-extras
@@ -320,9 +320,11 @@ EOF
 # Prepare extroot/overlay automatically
 mkdir -p /etc/hotplug.d/online
 cat << "EOF" > /etc/hotplug.d/online/49-extroot-init
-if [ ! -e /etc/extroot-init ] && lock -n /var/lock/extroot-init && opkg update then
+if [ ! -e /etc/extroot-init ] && lock -n /var/lock/extroot-init && opkg update
+then
   . /etc/profile.d/opkg.sh
-  if ! uci -q get fstab.overlay > /dev/null then
+  if ! uci -q get fstab.overlay > /dev/null
+  then
     DISK=/dev/mmcblk0
     DEVICE=${DISK}p3
     uci set opkg.rwm="opkg"
@@ -334,7 +336,8 @@ if [ ! -e /etc/extroot-init ] && lock -n /var/lock/extroot-init && opkg update t
     uci add_list opkg.rwm.ipkg="mount-utils"
     uci commit opkg
     opkg restore rwm
-    if [ ! -b ${DEVICE} ] then
+    if [ ! -b ${DEVICE} ]
+    then
       # Add root fs before mount root
       yes | fdisk -u ${DISK} << "EOCF"
 n
@@ -347,7 +350,8 @@ EOCF
       partx -d - ${DEVICE}
       partx -a - ${DEVICE}
     fi
-    if [ -b ${DEVICE} ] then
+    if [ -b ${DEVICE} ]
+    then
       mkfs.f2fs -l rootfs_data  ${DEVICE}
       eval $(block info ${DEVICE} | grep -o -e "UUID=\S*")
       uci -q delete fstab.overlay
