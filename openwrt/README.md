@@ -2,6 +2,11 @@ How to build :
 ```
 make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-mount kmod-fs-ext4 kmod-fs-f2fs f2fstools fdisk mount-utils partx-utils luci-ssl" 
 ```
+!!! ADVICE !!!
+
+Depending of the version f the U-Boot and the commands available, and also on possible bugs in this method, preffer a stardard way to flash your firmware !
+The methods below are given **as is**, they may broke your system and put it in a necessary recovery mode !
+**USE IT AT YOUR OWN RISK**
 
 How to flash EBIN eMMC from u-boot (with gzwrite) : 
 ```
