@@ -6,7 +6,7 @@ make image PROFILE=globalscale_espressobin-v7-emmc FILES=files/ PACKAGES="block-
 
 Depending of the version f the U-Boot and the commands available, and also on possible bugs in this method, preffer a stardard way to flash your firmware !
 
-The methods below are given **as is**, they may broke your system and put it in a necessary recovery mode !
+The method below is given **as is**, they may broke your system and put it in a necessary recovery mode !
 
 **USE IT AT YOUR OWN RISK**
 
